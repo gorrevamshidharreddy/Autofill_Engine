@@ -1,0 +1,61 @@
+2026-04-14 12:02:11,298  INFO      autofill: Extracting data from PDF (29822 bytes)
+2026-04-14 12:02:11,422  INFO      autofill: Normalising extracted data
+2026-04-14 12:02:11,425  INFO      autofill: Matching 30 form fields
+2026-04-14 12:02:11,555  INFO      autofill: Applying field-type formatters
+2026-04-14 12:15:02,372  INFO      autofill: Extracting data from PDF (13085 bytes)
+2026-04-14 12:15:02,829  INFO      autofill: Normalising extracted data
+2026-04-14 12:15:02,848  INFO      autofill: Matching 30 form fields
+2026-04-14 12:15:02,971  INFO      autofill: Applying field-type formatters
+2026-04-14 17:02:08,843  INFO      autofill: Extracting from PDF (13085 bytes)
+2026-04-14 17:02:09,175  INFO      autofill: Done — filled:33 skipped:7 empty:0
+2026-04-14 17:03:20,851  INFO      autofill: Extracting from PDF (13085 bytes)
+2026-04-14 17:03:21,148  INFO      autofill: Done — filled:33 skipped:7 empty:0
+2026-04-14 17:07:27,572  INFO      autofill: Extracting from PDF (13085 bytes)
+2026-04-14 17:07:27,855  INFO      autofill: Done — filled:33 skipped:7 empty:0
+2026-04-14 17:20:01,531  INFO      autofill: Processing PDF (13085 bytes)
+2026-04-14 17:20:01,825  INFO      autofill: Pipeline Success — filled: 33
+2026-04-14 17:21:36,987  INFO      autofill: Processing PDF (13085 bytes)
+2026-04-14 17:21:37,261  INFO      autofill: Pipeline Success — filled: 33
+2026-04-14 17:28:20,548  INFO      autofill: Processing PDF (13085 bytes)
+2026-04-14 21:37:01,384  INFO      autofill: Processing PDF (13085 bytes)
+2026-04-14 21:39:05,202  INFO      autofill: Processing PDF (13085 bytes)
+2026-04-15 09:52:36,516  INFO      autofill: Processing PDF (13085 bytes)
+2026-04-15 09:53:03,561  INFO      autofill: Processing PDF (13085 bytes)
+2026-04-15 10:49:51,717  INFO      autofill: Extracting from PDF (13085 bytes)
+2026-04-15 10:49:51,779  INFO      autofill: Extracted 34 / 63 fields
+2026-04-15 14:42:47,732  INFO      autofill: Extracting from PDF (16022 bytes)
+2026-04-15 14:42:47,966  INFO      autofill: Extracted 23 / 63 fields
+2026-04-15 14:44:09,688  INFO      autofill: Extracting from PDF (16225 bytes)
+2026-04-15 14:44:09,807  INFO      autofill: Extracted 23 / 63 fields
+2026-04-15 14:55:50,163  INFO      autofill: Extracting from PDF (13085 bytes)
+2026-04-15 14:55:50,282  INFO      autofill: Extracted 34 / 63 fields
+2026-04-15 15:17:33,288  INFO      autofill: Extracting from PDF (16225 bytes)
+2026-04-15 15:17:33,629  INFO      autofill: Extracted 30 / 63 fields
+2026-04-15 15:28:45,602  INFO      autofill: Extracting from PDF (16225 bytes)
+2026-04-15 15:28:45,946  INFO      autofill: Extracted 31 / 63 fields
+2026-04-15 15:29:18,344  INFO      autofill: Extracting from PDF (16022 bytes)
+2026-04-15 15:29:18,669  INFO      autofill: Extracted 31 / 63 fields
+2026-04-15 15:29:34,273  INFO      autofill: Extracting from PDF (13085 bytes)
+2026-04-15 15:29:34,490  INFO      autofill: Extracted 31 / 63 fields
+2026-04-15 15:35:44,509  INFO      autofill: Extracting from PDF (16225 bytes)
+2026-04-15 15:35:44,856  INFO      autofill: Extracted 31 / 63 fields
+2026-04-15 15:36:12,497  INFO      autofill: Extracting from PDF (13085 bytes)
+2026-04-15 15:36:12,710  INFO      autofill: Extracted 34 / 63 fields
+2026-04-15 15:39:40,391  INFO      autofill: Extracting from PDF (16022 bytes)
+2026-04-15 15:39:40,687  INFO      autofill: Extracted 31 / 63 fields
+2026-04-15 15:40:51,806  INFO      autofill: Extracting from PDF (13085 bytes)
+2026-04-15 15:40:52,011  INFO      autofill: Extracted 34 / 63 fields
+2026-04-15 15:41:04,170  INFO      autofill: Extracting from PDF (16225 bytes)
+2026-04-15 15:41:04,418  INFO      autofill: Extracted 31 / 63 fields
+2026-04-15 15:46:27,553  INFO      autofill: Extracting from PDF (96126 bytes)
+2026-04-15 15:46:28,253  INFO      autofill: Extracted 10 / 63 fields
+2026-04-15 15:54:26,418  INFO      autofill: Extracting from PDF (13085 bytes)
+2026-04-15 15:54:26,613  INFO      autofill: Extracted 34 / 63 fields
+2026-04-15 15:56:07,387  INFO      autofill: Extracting from PDF (16225 bytes)
+2026-04-15 15:56:07,610  INFO      autofill: Extracted 31 / 63 fields
+2026-04-15 16:30:04,581  INFO      autofill: Extracting from PDF (16225 bytes)
+2026-04-15 16:30:04,813  INFO      autofill: Extracted 31 / 63 fields
+2026-04-15 17:15:03,435  INFO      autofill: Extracting from PDF (16225 bytes)
+2026-04-15 17:15:03,614  INFO      autofill: Extracted 31 / 63 fields
+2026-04-15 17:15:40,556  INFO      autofill: Extracting from PDF (16225 bytes)
+2026-04-15 17:15:40,706  INFO      autofill: Extracted 31 / 63 fields

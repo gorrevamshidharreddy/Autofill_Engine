@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Resume Autofill</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --surface2:  #21262d;
+      --border:    #30363d;
+      --accent:    #58a6ff;
+      --green:     #3fb950;
+      --red:       #f85149;
+      --yellow:    #d29922;
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+      --radius:    8px;
+      --r-sm:      5px;
+    }
+
+    body {
+      width: 400px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    .header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 16px 11px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: linear-gradient(135deg, #58a6ff, #a371f7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0; color: #fff;
+    }
+    .header-info { flex: 1; min-width: 0; }
+    .header-title { font-weight: 600; font-size: 14px; }
+    .header-sub   { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ── Auto-fill toggle ────────────────────────────── */
+    .toggle-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .toggle-label { font-size: 12px; color: var(--muted); flex: 1; }
+    .toggle-label strong { color: var(--text); }
+    .switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0;
+      background: var(--border); border-radius: 10px;
+      cursor: pointer; transition: background .2s;
+    }
+    .slider::before {
+      content: ""; position: absolute;
+      width: 14px; height: 14px; border-radius: 50%;
+      left: 3px; top: 3px; background: #fff;
+      transition: transform .2s;
+    }
+    .switch input:checked + .slider { background: var(--green); }
+    .switch input:checked + .slider::before { transform: translateX(16px); }
+
+    /* ── Status bar ──────────────────────────────────── */
+    #status {
+      margin: 8px 16px 0;
+      padding: 8px 10px; border-radius: var(--r-sm);
+      font-size: 12px; display: none;
+    }
+    #status.info    { background: rgba(88,166,255,.12); color: #79c0ff; border: 1px solid rgba(88,166,255,.3); }
+    #status.success { background: rgba(63,185,80,.10);  color: #56d364; border: 1px solid rgba(63,185,80,.3);  }
+    #status.error   { background: rgba(248,81,73,.10);  color: #ff7b72; border: 1px solid rgba(248,81,73,.3);  }
+    #status.loading { background: rgba(88,166,255,.07); color: var(--muted); border: 1px solid var(--border); }
+
+    /* ── Sections ────────────────────────────────────── */
+    .section { padding: 12px 16px; }
+
+    /* ── Upload zone ─────────────────────────────────── */
+    #upload-zone {
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      user-select: none;
+    }
+    #upload-zone:hover, #upload-zone.drag { border-color: var(--accent); background: rgba(88,166,255,.05); }
+    #upload-zone.ready { border-color: var(--green); background: rgba(63,185,80,.04); }
+    .upload-icon { font-size: 26px; margin-bottom: 6px; }
+    .upload-title { font-weight: 600; margin-bottom: 3px; }
+    .upload-sub   { font-size: 11px; color: var(--muted); }
+    #file-name    { font-size: 12px; color: var(--green); margin-top: 6px; font-weight: 500; }
+    #file-input   { display: none; }
+
+    /* ── Buttons ─────────────────────────────────────── */
+    .btn {
+      display: block; width: 100%; padding: 9px 12px;
+      border: none; border-radius: var(--radius);
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: opacity .15s, transform .1s;
+      text-align: center;
+    }
+    .btn:active   { transform: scale(.98); }
+    .btn:disabled { opacity: .4; cursor: default; }
+    .btn-primary  { background: var(--accent); color: #0d1117; margin-top: 10px; }
+    .btn-primary:hover:not(:disabled) { opacity: .88; }
+    .btn-fill     { background: var(--green); color: #0d1117; }
+    .btn-fill:hover:not(:disabled) { opacity: .88; }
+    .btn-outline  {
+      background: none; border: 1px solid var(--border);
+      color: var(--text); margin-top: 6px;
+    }
+    .btn-outline:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+    .btn-danger   { background: none; border: 1px solid var(--border); color: var(--red); margin-top: 6px; }
+    .btn-danger:hover:not(:disabled)  { border-color: var(--red); }
+
+    /* ── Tabs ────────────────────────────────────────── */
+    .tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .tab  {
+      flex: 1; padding: 9px 0; text-align: center;
+      font-size: 12px; cursor: pointer;
+      color: var(--muted); border-bottom: 2px solid transparent;
+      transition: color .15s;
+    }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* ── Field list ──────────────────────────────────── */
+    .section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    }
+    #fields-container {
+      max-height: 270px; overflow-y: auto; padding-right: 2px;
+    }
+    #fields-container::-webkit-scrollbar       { width: 4px; }
+    #fields-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .field-row {
+      display: flex; align-items: center; gap: 6px;
+      padding: 4px 0; border-bottom: 1px solid rgba(48,54,61,.5);
+    }
+    .field-row:last-child { border-bottom: none; }
+    .field-lbl {
+      width: 126px; flex-shrink: 0;
+      font-size: 11px; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .field-inp {
+      flex: 1; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      color: var(--text); padding: 4px 7px; font-size: 12px;
+      min-width: 0;
+    }
+    .field-inp:focus { outline: none; border-color: var(--accent); }
+    .conf {
+      font-size: 10px; padding: 2px 5px; border-radius: 3px;
+      flex-shrink: 0; min-width: 32px; text-align: center; font-weight: 600;
+    }
+    .conf-h { background: rgba(63,185,80,.15);  color: #56d364; }
+    .conf-m { background: rgba(210,153,34,.15); color: #e3b341; }
+    .conf-l { background: rgba(248,81,73,.12);  color: #ff7b72; }
+
+    /* ── Stats ───────────────────────────────────────── */
+    .stats {
+      display: flex; gap: 14px; padding: 8px 16px;
+      background: var(--surface); border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--muted);
+    }
+    .stats span { color: var(--text); font-weight: 600; }
+
+    /* ── Spinner ─────────────────────────────────────── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin {
+      display: inline-block; width: 11px; height: 11px;
+      border: 2px solid rgba(255,255,255,.25); border-top-color: #fff;
+      border-radius: 50%; animation: spin .55s linear infinite;
+      vertical-align: middle; margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo">✦</div>
+  <div class="header-info">
+    <div class="header-title">Resume Autofill</div>
+    <div class="header-sub" id="header-sub">No profile saved</div>
+  </div>
+</div>
+
+<!-- Auto-fill toggle -->
+<div class="toggle-row" id="toggle-row" style="display:none">
+  <span class="toggle-label"><strong>Auto-fill on page load</strong> — fill every new page automatically</span>
+  <label class="switch">
+    <input type="checkbox" id="auto-toggle"/>
+    <span class="slider"></span>
+  </label>
+</div>
+
+<!-- Status -->
+<div id="status"></div>
+
+<!-- ── UPLOAD VIEW ────────────────────────────────────── -->
+<div id="view-upload">
+  <div class="section">
+    <div id="upload-zone">
+      <div class="upload-icon">📄</div>
+      <div class="upload-title">Drop your resume PDF here</div>
+      <div class="upload-sub">or click to browse</div>
+      <div id="file-name"></div>
+    </div>
+    <input type="file" id="file-input" accept=".pdf"/>
+    <button class="btn btn-primary" id="extract-btn" disabled>Extract from PDF</button>
+  </div>
+</div>
+
+<!-- ── PROFILE VIEW ───────────────────────────────────── -->
+<div id="view-profile" style="display:none">
+  <div class="tabs">
+    <div class="tab active" data-tab="fields">Extracted Fields</div>
+    <div class="tab" data-tab="replace">Replace PDF</div>
+  </div>
+
+  <!-- Fields tab -->
+  <div id="tab-fields">
+    <div class="section">
+      <div class="section-label">Review &amp; edit — click any value to change</div>
+      <div id="fields-container"></div>
+    </div>
+    <div class="section" style="padding-top:4px">
+      <button class="btn btn-fill" id="fill-btn">⚡ Autofill this page</button>
+      <button class="btn btn-outline" id="save-btn">Save changes</button>
+      <button class="btn btn-danger"  id="clear-btn">Clear saved profile</button>
+    </div>
+  </div>
+
+  <!-- Replace tab -->
+  <div id="tab-replace" style="display:none">
+    <div class="section">
+      <div id="upload-zone2" style="border:1.5px dashed var(--border);border-radius:8px;padding:20px 16px;text-align:center;cursor:pointer">
+        <div class="upload-icon">📄</div>
+        <div class="upload-title">Upload a new PDF</div>
+        <div class="upload-sub">Replaces the existing profile</div>
+        <div id="file-name2" style="font-size:12px;color:var(--green);margin-top:6px;font-weight:500"></div>
+      </div>
+      <input type="file" id="file-input2" accept=".pdf" style="display:none"/>
+      <button class="btn btn-primary" id="extract-btn2" disabled>Extract from PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stats bar -->
+<div class="stats" id="stats-bar" style="display:none">
+  <div>Fields: <span id="s-total">0</span></div>
+  <div>Filled: <span id="s-filled">0</span></div>
+  <div>Empty: <span id="s-empty">0</span></div>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
